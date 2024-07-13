@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="thumbnails"
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
@@ -9,13 +9,20 @@
       <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
       <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
-          <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          <LayoutPool
+            @select="
+              (slide) => {
+                createSlideByTemplate(slide)
+                presetLayoutPopoverVisible = false
+              }
+            "
+          />
         </template>
         <div class="select-btn"><IconDown /></div>
       </Popover>
     </div>
 
-    <Draggable 
+    <Draggable
       class="thumbnail-list"
       ref="thumbnailsRef"
       :modelValue="slides"
@@ -29,10 +36,10 @@
         <div
           class="thumbnail-item"
           :class="{
-            'active': slideIndex === index,
-            'selected': selectedSlidesIndex.includes(index),
+            active: slideIndex === index,
+            selected: selectedSlidesIndex.includes(index),
           }"
-          @mousedown="$event => handleClickSlideThumbnail($event, index)"
+          @mousedown="($event) => handleClickSlideThumbnail($event, index)"
           @dblclick="enterScreening()"
           v-contextmenu="contextmenusThumbnailItem"
         >
@@ -42,7 +49,10 @@
       </template>
     </Draggable>
 
-    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+    <div class="page-number">幻灯片 {{ slideIndex + 1 }} / {{ slides.length }}</div>
+    <section class="floating-export-btn" style="position: fixed; top: 8px; left: 38%">
+      <button @click="quickExport" style="width: 200px">导出 PPTX</button>
+    </section>
   </div>
 </template>
 
@@ -56,6 +66,7 @@ import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
+import useExport from '@/hooks/useExport'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
@@ -89,23 +100,29 @@ const {
 
 // 页面被切换时
 const thumbnailsRef = ref<InstanceType<typeof Draggable>>()
-watch(() => slideIndex.value, () => {
-
-  // 清除多选状态的幻灯片
-  if (selectedSlidesIndex.value.length) {
-    mainStore.updateSelectedSlidesIndex([])
-  }
-
-  // 检查当前页缩略图是否在可视范围，不在的话需要滚动到对应的位置
-  nextTick(() => {
-    const activeThumbnailRef: HTMLElement = thumbnailsRef.value?.$el?.querySelector('.thumbnail-item.active')
-    if (thumbnailsRef.value && activeThumbnailRef && !isElementInViewport(activeThumbnailRef, thumbnailsRef.value.$el)) {
-      setTimeout(() => {
-        activeThumbnailRef.scrollIntoView({ behavior: 'smooth' })
-      }, 100)
+watch(
+  () => slideIndex.value,
+  () => {
+    // 清除多选状态的幻灯片
+    if (selectedSlidesIndex.value.length) {
+      mainStore.updateSelectedSlidesIndex([])
     }
-  })
-})
+
+    // 检查当前页缩略图是否在可视范围，不在的话需要滚动到对应的位置
+    nextTick(() => {
+      const activeThumbnailRef: HTMLElement = thumbnailsRef.value?.$el?.querySelector('.thumbnail-item.active')
+      if (
+        thumbnailsRef.value &&
+        activeThumbnailRef &&
+        !isElementInViewport(activeThumbnailRef, thumbnailsRef.value.$el)
+      ) {
+        setTimeout(() => {
+          activeThumbnailRef.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    })
+  }
+)
 
 // 切换页面
 const changeSlideIndex = (index: number) => {
@@ -127,16 +144,14 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
     if (slideIndex.value === index) {
       if (!isMultiSelected) return
 
-      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter((item) => item !== index)
       mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
       changeSlideIndex(selectedSlidesIndex.value[0])
-    }
-    else {
+    } else {
       if (selectedSlidesIndex.value.includes(index)) {
-        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter((item) => item !== index)
         mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      }
-      else {
+      } else {
         const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
         mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
       }
@@ -253,6 +268,11 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     },
   ]
 }
+
+const { exportPPTX, exporting } = useExport()
+function quickExport() {
+  exportPPTX(slides.value, true, true)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -311,7 +331,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   padding: 5px 0;
 
   .thumbnail {
-    outline: 2px solid rgba($color: $themeColor, $alpha: .15);
+    outline: 2px solid rgba($color: $themeColor, $alpha: 0.15);
   }
 
   &.active {

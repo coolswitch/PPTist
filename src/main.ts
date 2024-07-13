@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import Router from './router'
 import App from './App.vue'
 
 import '@icon-park/vue-next/styles/index.css'
@@ -14,6 +15,7 @@ import Directive from '@/plugins/directive'
 
 const app = createApp(App)
 app.use(Icon)
+app.use(Router)
 app.use(Directive)
 app.use(createPinia())
 app.mount('#app')
