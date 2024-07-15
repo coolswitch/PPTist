@@ -5,6 +5,7 @@ const defaultFontName = /mac|ipad|iphone/i.test(navigator.userAgent) ? 'PingFang
 export const slides: Slide[] = [
   {
     id: 'test-slide-1',
+    type: 'title-only',
     elements: [
       {
         type: 'shape',
@@ -42,19 +43,7 @@ export const slides: Slide[] = [
         width: 585,
         height: 188,
         lineHeight: 1.2,
-        content: "<p><strong><span style='font-size:  112px'>PPTIST</span></strong></p>",
-        rotate: 0,
-        defaultFontName,
-        defaultColor: '#333',
-      },
-      {
-        type: 'text',
-        id: '7stmVP',
-        left: 355,
-        top: 253.25,
-        width: 585,
-        height: 56,
-        content: "<p><span style='font-size:  24px'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>",
+        content: "<p><strong><span style='font-size:  64px'>$TITLE$</span></strong></p>",
         rotate: 0,
         defaultFontName,
         defaultColor: '#333',
@@ -79,6 +68,7 @@ export const slides: Slide[] = [
   },
   {
     id: 'test-slide-2',
+    type: 'catalog',
     elements: [
       {
         type: 'text',
@@ -88,8 +78,7 @@ export const slides: Slide[] = [
         width: 711,
         height: 77,
         lineHeight: 1.2,
-        content:
-          "<p style='text-align: center;'><strong><span style='font-size: 48px'>在此处添加标题</span></strong></p>",
+        content: "<p style='text-align: center;'><strong><span style='font-size: 48px'>$TITLE$</span></strong></p>",
         rotate: 0,
         defaultFontName,
         defaultColor: '#333',
@@ -101,7 +90,69 @@ export const slides: Slide[] = [
         top: 249.84259259259264,
         width: 585,
         height: 56,
-        content: "<p style='text-align: center;'><span style='font-size: 24px'>在此处添加副标题</span></p>",
+        content:
+          "<i>hi</i>$LOOP_START$<p style='text-align: center;'><span style='font-size: 24px'>$CATALOG$</span></p>$LOOP_END$<i>ha</i>",
+        rotate: 0,
+        defaultFontName,
+        defaultColor: '#333',
+      },
+      {
+        type: 'line',
+        id: '7CQDwc',
+        left: 323.09259259259267,
+        top: 238.33333333333334,
+        start: [0, 0],
+        end: [354.8148148148148, 0],
+        points: ['', ''],
+        color: '#5b9bd5',
+        style: 'solid',
+        width: 4,
+      },
+      {
+        type: 'shape',
+        id: '09wqWw',
+        left: -27.648148148148138,
+        top: 432.73148148148147,
+        width: 1056.2962962962963,
+        height: 162.96296296296296,
+        viewBox: [200, 200],
+        path: 'M 0 20 C 40 -40 60 60 100 20 C 140 -40 160 60 200 20 L 200 180 C 140 240 160 140 100 180 C 40 240 60 140 0 180 L 0 20 Z',
+        fill: '#5b9bd5',
+        fixedRatio: false,
+        rotate: 0,
+      },
+    ],
+    background: {
+      type: 'solid',
+      color: '#fff',
+    },
+  },
+  {
+    id: 'test-slide-2',
+    type: 'content',
+    elements: [
+      {
+        type: 'text',
+        id: 'ptNnUJ',
+        left: 145,
+        top: 148,
+        width: 711,
+        height: 77,
+        lineHeight: 1.2,
+        content: "<p style='text-align: center;'><strong><span style='font-size: 48px'>$TITLE$</span></strong></p>",
+        rotate: 0,
+        defaultFontName,
+        defaultColor: '#333',
+      },
+      {
+        type: 'text',
+        id: 'mRHvQN',
+        left: 207.50000000000003,
+        top: 249.84259259259264,
+        width: 585,
+        height: 56,
+        content:
+          "$LOOP_START$<p style='text-align: center;'><span style='font-size: 24px'>$CONTENT$</span></p>$LOOP_END$",
         rotate: 0,
         defaultFontName,
         defaultColor: '#333',
@@ -139,6 +190,7 @@ export const slides: Slide[] = [
   },
   {
     id: 'test-slide-3',
+    type: 'not-template',
     elements: [
       {
         type: 'shape',
