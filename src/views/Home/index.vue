@@ -30,6 +30,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import HomeHeaderTeleport from '@/layout/HomeHeaderTeleport.vue'
+import useImport from './useImport'
 
 const columns = [
   { title: 'Name', dataIndex: 'name' },
@@ -65,22 +66,5 @@ const dataSource = [
   },
 ]
 
-const isPopup = ref(false)
-const isDisabled = ref(true)
-const isLoading = ref(false)
-let file: File | null = null
-function handleImport(e: Event) {
-  if (e.type === 'click') {
-    console.log(file)
-    isLoading.value = true
-    setTimeout(() => {
-      isPopup.value = false
-    }, 3000)
-  } else {
-    const files = document.querySelector<HTMLInputElement>('#iptUpload')?.files
-    if (!files?.length) return
-    file = files[0]
-    isDisabled.value = false
-  }
-}
+const { isPopup, isDisabled, isLoading, handleImport } = useImport('#iptUpload')
 </script>
