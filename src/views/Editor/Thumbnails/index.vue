@@ -50,9 +50,9 @@
     </Draggable>
 
     <div class="page-number">幻灯片 {{ slideIndex + 1 }} / {{ slides.length }}</div>
-    <section class="floating-export-btn" style="position: fixed; top: 8px; left: 38%">
+    <!-- <section class="floating-export-btn" style="position: fixed; top: 8px; left: 38%">
       <button @click="quickExport" style="width: 200px">导出 PPTX</button>
-    </section>
+    </section> -->
   </div>
 </template>
 
