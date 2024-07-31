@@ -2,9 +2,8 @@
   <a-modal v-model:open="isPopup" :title="!currRow ? '添加' : '编辑'">
     <a-form
       :model="formState"
-      name="basic"
-      :label-col="{ span: 8 }"
-      :wrapper-col="{ span: 16 }"
+      :label-col="{ span: 6 }"
+      :wrapper-col="{ span: 18 }"
       autocomplete="off"
       @finish="onFinish"
     >
@@ -16,11 +15,17 @@
         <a-input v-model:value="formState.password" />
       </a-form-item>
 
-      <a-button type="primary" html-type="submit" :loading="isLoading">保存</a-button>
+      <a-button
+        type="primary"
+        html-type="submit"
+        :loading="isLoading"
+        style="position: absolute; right: 24px; z-index: 1"
+        >保存</a-button
+      >
     </a-form>
     <template #footer>
       <a-button @click="isPopup = false">取消</a-button>
-      <a-button>保存</a-button>
+      <a-button>占位</a-button>
     </template>
   </a-modal>
 </template>
