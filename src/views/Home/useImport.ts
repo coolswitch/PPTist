@@ -1,9 +1,12 @@
 import { ref, watch, type WatchStopHandle, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+// import { storeToRefs } from 'pinia'
+// import { useSlidesStore } from '@/store'
 import useImportPptx from '@/hooks/useImport'
 
 export default function useImport(uploadInputSelector: string) {
   const router = useRouter()
+  // const { theme, slides } = storeToRefs(useSlidesStore())
   const { importPPTXFile, exporting: isLoading } = useImportPptx()
 
   const isPopup = ref(false)
@@ -17,6 +20,8 @@ export default function useImport(uploadInputSelector: string) {
       stop = watch(isLoading, (val) => {
         if (!val) {
           router.push('/preview')
+          // console.log('theme', theme.value)
+          // console.log('slides', slides.value)
           stop && stop()
         }
       })

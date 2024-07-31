@@ -10,7 +10,8 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: 'account-manage',
     meta: { title: '账号管理' },
-    component: { render: () => h('h2', '账号管理') },
+    component: () => import('@/views/Home/account-manage.vue'),
+    // component: { render: () => h('h2', '账号管理') },
   },
   // {
   //   path: 'test',
