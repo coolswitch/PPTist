@@ -1,11 +1,6 @@
 <template>
   <div class="toolbar">
-    <Tabs 
-      :tabs="currentTabs" 
-      :value="toolbarState" 
-      card 
-      @update:value="key => setToolbarState(key as ToolbarStates)"
-    />
+    <Tabs :tabs="currentTabs" :value="toolbarState" card @update:value="key => setToolbarState(key as ToolbarStates)" />
     <div class="content">
       <component :is="currentPanelComponent"></component>
     </div>
@@ -25,6 +20,7 @@ import SlideDesignPanel from './SlideDesignPanel.vue'
 import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 import SymbolPanel from './SymbolPanel.vue'
+import TemplateMark from './TemplateMark.vue'
 import Tabs from '@/components/Tabs.vue'
 
 interface ElementTabs {
@@ -38,24 +34,28 @@ const { activeElementIdList, handleElement, toolbarState } = storeToRefs(mainSto
 const elementTabs = computed<ElementTabs[]>(() => {
   if (handleElement.value?.type === 'text') {
     return [
+      { label: '标记模板', key: ToolbarStates.TEMPLATE_MARK },
       { label: '样式', key: ToolbarStates.EL_STYLE },
       { label: '符号', key: ToolbarStates.SYMBOL },
       { label: '位置', key: ToolbarStates.EL_POSITION },
-      { label: '动画', key: ToolbarStates.EL_ANIMATION },
+      // { label: '动画', key: ToolbarStates.EL_ANIMATION },
     ]
   }
   return [
+    { label: '标记模板', key: ToolbarStates.TEMPLATE_MARK },
     { label: '样式', key: ToolbarStates.EL_STYLE },
     { label: '位置', key: ToolbarStates.EL_POSITION },
-    { label: '动画', key: ToolbarStates.EL_ANIMATION },
+    // { label: '动画', key: ToolbarStates.EL_ANIMATION },
   ]
 })
 const slideTabs = [
+  { label: '标记模板', key: ToolbarStates.TEMPLATE_MARK },
   { label: '设计', key: ToolbarStates.SLIDE_DESIGN },
-  { label: '切换', key: ToolbarStates.SLIDE_ANIMATION },
-  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+  // { label: '切换', key: ToolbarStates.SLIDE_ANIMATION },
+  // { label: '动画', key: ToolbarStates.EL_ANIMATION },
 ]
 const multiSelectTabs = [
+  { label: '标记模板', key: ToolbarStates.TEMPLATE_MARK },
   { label: '样式', key: ToolbarStates.EL_STYLE },
   { label: '位置', key: ToolbarStates.MULTI_POSITION },
 ]
@@ -71,7 +71,7 @@ const currentTabs = computed(() => {
 })
 
 watch(currentTabs, () => {
-  const currentTabsValue: ToolbarStates[] = currentTabs.value.map(tab => tab.key)
+  const currentTabsValue: ToolbarStates[] = currentTabs.value.map((tab) => tab.key)
   if (!currentTabsValue.includes(toolbarState.value)) {
     mainStore.setToolbarState(currentTabsValue[0])
   }
@@ -86,6 +86,7 @@ const currentPanelComponent = computed(() => {
     [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
     [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
     [ToolbarStates.SYMBOL]: SymbolPanel,
+    [ToolbarStates.TEMPLATE_MARK]: TemplateMark,
   }
   return panelMap[toolbarState.value] || null
 })

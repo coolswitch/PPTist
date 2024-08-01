@@ -707,7 +707,7 @@ export interface Note {
  */
 export interface Slide {
   id: string
-  type?: 'title-only' | 'catalog' | 'content' | 'not-template'
+  type?: SlideType
   elements: PPTElement[]
   notes?: Note[]
   remark?: string
@@ -735,3 +735,11 @@ export interface SlideTheme {
   outline: PPTElementOutline
   shadow: PPTElementShadow
 }
+
+// :options="[
+//   { label: '首页', value: 'index' },
+//   { label: '目录页', value: 'catalog' },
+//   { label: '(章节)标题页', value: 'title-only' },
+//   { label: '内容页', value: 'content' },
+//   { label: '无标记页', value: 'not-template' },
+export type SlideType = 'index' | 'catalog' | 'title-only' | 'content' | 'not-template'

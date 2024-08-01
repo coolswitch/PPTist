@@ -34,7 +34,7 @@ export const useSlidesStore = defineStore('slides', {
   state: (): SlidesState => ({
     title: '未命名演示文稿', // 幻灯片标题
     theme: theme, // 主题样式
-    slides: [], //slides, // 幻灯片页面数据
+    slides: [], // slides, // 幻灯片页面数据
     slideIndex: 0, // 当前页面索引
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
   }),
@@ -119,6 +119,7 @@ export const useSlidesStore = defineStore('slides', {
 
     addSlide(slide: Slide | Slide[]) {
       const slides = Array.isArray(slide) ? slide : [slide]
+      slides.forEach((item) => !item.type && (item.type = 'content'))
       const addIndex = this.slideIndex + 1
       this.slides.splice(addIndex, 0, ...slides)
       this.slideIndex = addIndex

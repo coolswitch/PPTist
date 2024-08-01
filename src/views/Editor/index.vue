@@ -33,8 +33,7 @@ import EditorHeader from './TplHeader/index.vue'
 import Canvas from './Canvas/index.vue'
 import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
-// import Toolbar from './Toolbar/index.vue'
-import Toolbar from './TplToolbar/index.vue'
+import Toolbar from './Toolbar/index.vue'
 import Remark from './Remark/index.vue'
 import ExportDialog from './ExportDialog/index.vue'
 import SelectPanel from './SelectPanel.vue'
@@ -78,5 +77,15 @@ usePasteEvent()
 .layout-content-right {
   width: 260px;
   height: 100%;
+}
+</style>
+<style>
+/* 隐藏页面模板 */
+.add-slide .select-btn, 
+/* 隐藏批注 */
+.i-icon-comment.handler-item,
+/* 隐藏备注 */
+.remark.center-bottom {
+  display: none !important;
 }
 </style>
