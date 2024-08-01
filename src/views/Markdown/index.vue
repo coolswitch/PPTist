@@ -1,6 +1,12 @@
 <template>
-  <textarea v-model="jsonStr" style="width: 100%; height: 400px"></textarea>
-  <button @click="render">将上述json渲染为ppt</button>
+  <ul style="display: flex; justify-content: space-around">
+    <li>markdown</li>
+    <li>模板</li>
+  </ul>
+  <textarea v-model="jsonStr" style="width: 49%; height: 400px"></textarea>
+  <textarea v-model="tml" style="width: 49%; height: 400px"></textarea>
+  <button @click="render">将上述markdown按照模板渲染为ppt</button>
+  <button @click="render2">将上述json按照模板渲染为ppt</button>
 </template>
 
 <script lang="ts" setup>
@@ -11,6 +17,7 @@ import useMD from '@/hooks/useMD'
 import { slides } from '@/mocks/slides'
 
 const router = useRouter()
+const tml = ref(JSON.stringify(slides, null, '    '))
 const jsonStr = ref(`# AIGC：人工智能生成内容的未来
 
 ## 1. 什么是AIGC？
@@ -176,6 +183,17 @@ function render() {
       return
     }
     useSlidesStore().setSlides(json)
+    router.push('/preview')
+  } catch (e) {
+    console.error(e)
+    alert('json格式化失败')
+  }
+}
+
+function render2() {
+  try {
+
+    useSlidesStore().setSlides(JSON.parse(tml.value))
     router.push('/preview')
   } catch (e) {
     console.error(e)
