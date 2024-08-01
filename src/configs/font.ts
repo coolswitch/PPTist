@@ -30,15 +30,15 @@ export const SYS_FONTS = [
 ]
 
 export const WEB_FONTS = [
-  { label: '得意黑', value: '得意黑' },
-  { label: '仓耳小丸子', value: '仓耳小丸子' },
-  { label: '优设标题黑', value: '优设标题黑' },
-  { label: '峰广明锐体', value: '峰广明锐体' },
-  { label: '摄图摩登小方体', value: '摄图摩登小方体' },
-  { label: '站酷快乐体', value: '站酷快乐体' },
-  { label: '字制区喜脉体', value: '字制区喜脉体' },
-  { label: '素材集市康康体', value: '素材集市康康体' },
-  { label: '素材集市酷方体', value: '素材集市酷方体' },
-  { label: '途牛类圆体', value: '途牛类圆体' },
-  { label: '锐字真言体', value: '锐字真言体' },
+  // { label: '得意黑', value: '得意黑' },
+  // { label: '仓耳小丸子', value: '仓耳小丸子' },
+  // { label: '优设标题黑', value: '优设标题黑' },
+  // { label: '峰广明锐体', value: '峰广明锐体' },
+  // { label: '摄图摩登小方体', value: '摄图摩登小方体' },
+  // { label: '站酷快乐体', value: '站酷快乐体' },
+  // { label: '字制区喜脉体', value: '字制区喜脉体' },
+  // { label: '素材集市康康体', value: '素材集市康康体' },
+  // { label: '素材集市酷方体', value: '素材集市酷方体' },
+  // { label: '途牛类圆体', value: '途牛类圆体' },
+  // { label: '锐字真言体', value: '锐字真言体' },
 ]
