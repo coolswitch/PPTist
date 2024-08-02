@@ -1,40 +1,47 @@
 <template>
   <div class="template-mark">
-    <!-- type?: 'title-only' | 'catalog' | 'content' | 'not-template' -->
-    <Select
-      v-model:value="type"
-      :options="[
-        { label: '首页', value: 'index' },
-        { label: '目录页', value: 'catalog' },
-        { label: '(章节)标题页', value: 'title-only' },
-        { label: '内容页', value: 'content' },
-        { label: '无标记页', value: 'not-template' },
-      ]"
-    />
+    <Select v-model:value="pageType" :options="SlideTypeDictionary" />
     <div class="element-tags" v-if="!!currentText">
-      <a-button :class="{ active: activeType === 'TITLE' }" @click="makeTagTitle('TITLE')">标记为 标题</a-button>
-      <br /><br />
-      <a-button :class="{ active: activeType === 'SUB_TITLE' }" @click="makeTagTitle('SUB_TITLE')"
-        >标记为 子标题</a-button
-      >
-      <br /><br />
-      <a-button :class="{ active: activeType === 'CONTENT' }" @click="makeTagTitle('CONTENT')"> 标记为 内容</a-button>
-      <br /><br />
-      <a-button :class="{ active: activeType === 'CATALOG' }" @click="makeTagTitle('CATALOG')">
-        标记为 目录列表</a-button
+      <a-button
+        v-for="item in TagDictionary"
+        :key="item.key"
+        :class="{ active: activeType === item.key }"
+        @click="makeTagTitle(item.key)"
+        >标记为 {{ item.name }}</a-button
       >
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import Select from '@/components/Select.vue'
 import { useMainStore } from '@/store'
-import type { SlideType } from '@/types/slides'
+import type { SlideType, TagType } from '@/types/slides'
 
-const type = ref('content')
+// #region 页面标记
+const SlideTypeDictionary: { value: SlideType; label: string }[] = [
+  { label: '首页', value: 'index' },
+  { label: '目录页', value: 'catalog' },
+  { label: '(章节)标题页', value: 'title-only' },
+  { label: '内容页', value: 'content' },
+  { label: '无标记页', value: 'not-template' }
+]
+const pageType = ref('content')
+watch(pageType, (val) => {
+  console.log('此页变更为', val)
+})
+// #endregion
+
+// #region 元素标记
+const TagDictionary: { key: TagType; name: string }[] = [
+  { key: 'TITLE', name: '标题' },
+  { key: 'SUB_TITLE', name: '子标题' },
+  { key: 'CONTENT', name: '内容' },
+  { key: 'CATALOG', name: '目录列表' }
+]
+
 const { activeElementIdList, activeElementList, handleElement, activeGroupElementId } = storeToRefs(useMainStore())
 
 const currentPanelComponent = computed(() => {
@@ -59,7 +66,7 @@ const currentText = computed({
     } else {
       currentPanelComponent.value.content = html
     }
-  },
+  }
 })
 
 const activeType = computed(() => {
@@ -67,13 +74,14 @@ const activeType = computed(() => {
   return ['TITLE', 'SUB_TITLE', 'CATALOG', 'CONTENT'].find((key) => currentText.value.includes('$' + key + '$'))
 })
 
-function makeTagTitle(tag: 'TITLE' | 'SUB_TITLE' | 'CATALOG' | 'CONTENT') {
+function makeTagTitle(tag: TagType) {
   let html = currentText.value
   if (!html) return
   html = html.replace(/\>[^\<]+\</g, '>$' + tag + '$<')
   console.log('=====>', html, html.replace)
   currentText.value = html
 }
+// #endregion
 </script>
 
 <style lang="scss" scoped>

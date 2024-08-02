@@ -16,7 +16,7 @@
     </div>
 
     <div class="right">
-      <a-button>保存模板</a-button>
+      <a-button @click="save">保存模板</a-button>
     </div>
   </div>
 </template>
@@ -46,6 +46,10 @@ const startEditTitle = () => {
 const handleUpdateTitle = () => {
   slidesStore.setTitle(titleValue.value)
   editingTitle.value = false
+}
+
+function save() {
+  router.push('/md-only')
 }
 </script>
 

@@ -5,36 +5,40 @@ import homeRoutes from './home'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    component: () => import('@/views/Login/index.vue'),
+    component: () => import('@/views/Login/index.vue')
   },
   {
     path: '/home',
     component: () => import('@/layout/Home.vue'),
-    children: [...homeRoutes],
-  },
-  {
-    path: '/md',
-    component: () => import('@/views/Markdown/index.vue'),
+    children: [...homeRoutes]
   },
   {
     path: '/preview',
-    component: () => import('@/views/index.vue'),
+    component: () => import('@/views/index.vue')
+  },
+  {
+    path: '/md',
+    component: () => import('@/views/Markdown/index.vue')
+  },
+  {
+    path: '/md-only',
+    component: () => import('@/views/Markdown/only.vue')
   },
   {
     path: '/403',
     name: '403',
-    component: { render: () => h('h2', '403 - 无权访问') },
+    component: { render: () => h('h2', '403 - 无权访问') }
   },
   {
     path: '/:pathMatch(.*)',
     name: '404',
-    component: { render: () => h('h2', '404') },
-  },
+    component: { render: () => h('h2', '404') }
+  }
 ] as Array<RouteRecordRaw>
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 } as RouterOptions)
 
 export default router
