@@ -18,7 +18,7 @@ import type {
   PPTShapeElement,
   PPTLineElement,
   ShapeTextAlign,
-  PPTTextElement,
+  PPTTextElement
 } from '@/types/slides'
 
 export default () => {
@@ -40,8 +40,7 @@ export default () => {
         if (cover) slidesStore.setSlides(slides)
         else if (isEmptySlide.value) slidesStore.setSlides(slides)
         else addSlidesFromData(slides)
-      }
-      catch {
+      } catch {
         message.error('无法正确读取 / 解析该文件')
       }
     })
@@ -52,19 +51,20 @@ export default () => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
 
-    if (!el.isFlipV && !el.isFlipH) { // 右下
+    if (!el.isFlipV && !el.isFlipH) {
+      // 右下
       start = [0, 0]
       end = [el.width, el.height]
-    }
-    else if (el.isFlipV && el.isFlipH) { // 左上
+    } else if (el.isFlipV && el.isFlipH) {
+      // 左上
       start = [el.width, el.height]
       end = [0, 0]
-    }
-    else if (el.isFlipV && !el.isFlipH) { // 右上
+    } else if (el.isFlipV && !el.isFlipH) {
+      // 右上
       start = [0, el.height]
       end = [el.width, 0]
-    }
-    else { // 左下
+    } else {
+      // 左下
       start = [el.width, 0]
       end = [0, el.height]
     }
@@ -93,12 +93,12 @@ export default () => {
     for (const item of SHAPE_LIST) {
       shapeList.push(...item.children)
     }
-    
+
     const reader = new FileReader()
-    reader.onload = async e => {
+    reader.onload = async (e) => {
       const json = await parse(e.target!.result as ArrayBuffer, {
         slideFactor: 75 / 914400,
-        fontsizeFactor: 100 / 98,
+        fontsizeFactor: 100 / 98
       })
 
       const width = json.size.width
@@ -112,28 +112,26 @@ export default () => {
           background = {
             type: 'image',
             image: value.picBase64,
-            imageSize: 'cover',
+            imageSize: 'cover'
           }
-        }
-        else if (type === 'gradient') {
+        } else if (type === 'gradient') {
           background = {
             type: 'gradient',
             gradientType: 'linear',
             gradientColor: [value.colors[0].color, value.colors[value.colors.length - 1].color],
-            gradientRotate: value.rot,
+            gradientRotate: value.rot
           }
-        }
-        else {
+        } else {
           background = {
             type: 'solid',
-            color: value,
+            color: value
           }
         }
 
         const slide: Slide = {
           id: nanoid(10),
           elements: [],
-          background,
+          background
         }
 
         const parseElements = (elements: Element[]) => {
@@ -147,7 +145,7 @@ export default () => {
             el.height = el.height * scale
             el.left = el.left * scale
             el.top = el.top * scale
-  
+
             if (el.type === 'text') {
               const textEl: PPTTextElement = {
                 type: 'text',
@@ -164,15 +162,14 @@ export default () => {
                 outline: {
                   color: el.borderColor,
                   width: el.borderWidth,
-                  style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                  style: el.borderType === 'solid' ? 'solid' : 'dashed'
                 },
                 fill: el.fillColor,
-                vertical: el.isVertical,
+                vertical: el.isVertical
               }
               if (el.shadow) textEl.shadow = el.shadow
               slide.elements.push(textEl)
-            }
-            else if (el.type === 'image') {
+            } else if (el.type === 'image') {
               slide.elements.push({
                 type: 'image',
                 id: nanoid(10),
@@ -184,10 +181,9 @@ export default () => {
                 fixedRatio: true,
                 rotate: el.rotate,
                 flipH: el.isFlipH,
-                flipV: el.isFlipV,
+                flipV: el.isFlipV
               })
-            }
-            else if (el.type === 'audio') {
+            } else if (el.type === 'audio') {
               slide.elements.push({
                 type: 'audio',
                 id: nanoid(10),
@@ -200,10 +196,9 @@ export default () => {
                 fixedRatio: false,
                 color: theme.value.themeColor,
                 loop: false,
-                autoplay: false,
+                autoplay: false
               })
-            }
-            else if (el.type === 'video') {
+            } else if (el.type === 'video') {
               slide.elements.push({
                 type: 'video',
                 id: nanoid(10),
@@ -213,23 +208,21 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                autoplay: false,
+                autoplay: false
               })
-            }
-            else if (el.type === 'shape') {
+            } else if (el.type === 'shape') {
               if (el.shapType === 'line' || /Connector/.test(el.shapType)) {
                 const lineElement = parseLineElement(el)
                 slide.elements.push(lineElement)
-              }
-              else {
-                const shape = shapeList.find(item => item.pptxShapeType === el.shapType)
+              } else {
+                const shape = shapeList.find((item) => item.pptxShapeType === el.shapType)
 
                 const vAlignMap: { [key: string]: ShapeTextAlign } = {
-                  'mid': 'middle',
-                  'down': 'bottom',
-                  'up': 'top',
+                  mid: 'middle',
+                  down: 'bottom',
+                  up: 'top'
                 }
-                
+
                 const element: PPTShapeElement = {
                   type: 'shape',
                   id: nanoid(10),
@@ -245,33 +238,32 @@ export default () => {
                   outline: {
                     color: el.borderColor,
                     width: el.borderWidth,
-                    style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                    style: el.borderType === 'solid' ? 'solid' : 'dashed'
                   },
                   text: {
                     content: el.content,
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
-                    align: vAlignMap[el.vAlign] || 'middle',
+                    align: vAlignMap[el.vAlign] || 'middle'
                   },
                   flipH: el.isFlipH,
-                  flipV: el.isFlipV,
+                  flipV: el.isFlipV
                 }
                 if (el.shadow) element.shadow = el.shadow
-    
+
                 if (shape) {
                   element.path = shape.path
                   element.viewBox = shape.viewBox
-    
+
                   if (shape.pathFormula) {
                     element.pathFormula = shape.pathFormula
                     element.viewBox = [el.width, el.height]
-    
+
                     const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
                     if ('editable' in pathFormula) {
                       element.path = pathFormula.formula(el.width, el.height, pathFormula.defaultValue)
                       element.keypoint = pathFormula.defaultValue
-                    }
-                    else element.path = pathFormula.formula(el.width, el.height)
+                    } else element.path = pathFormula.formula(el.width, el.height)
                   }
                 }
                 if (el.shapType === 'custom') {
@@ -279,17 +271,16 @@ export default () => {
                   element.path = el.path!
                   element.viewBox = [originWidth, originHeight]
                 }
-    
+
                 slide.elements.push(element)
               }
-            }
-            else if (el.type === 'table') {
+            } else if (el.type === 'table') {
               const row = el.data.length
               const col = el.data[0].length
-  
+
               const style: TableCellStyle = {
                 fontname: theme.value.fontName,
-                color: theme.value.fontColor,
+                color: theme.value.fontColor
               }
               const data: TableCell[][] = []
               for (let i = 0; i < row; i++) {
@@ -311,18 +302,20 @@ export default () => {
                     text: textDiv.innerText,
                     style: {
                       ...style,
-                      align: ['left', 'right', 'center'].includes(align) ? (align as 'left' | 'right' | 'center') : 'left',
+                      align: ['left', 'right', 'center'].includes(align)
+                        ? (align as 'left' | 'right' | 'center')
+                        : 'left',
                       fontsize,
-                      fontname,
-                    },
+                      fontname
+                    }
                   })
                   textDiv = null
                 }
                 data.push(rowCells)
               }
-  
+
               const colWidths: number[] = new Array(col).fill(1 / col)
-  
+
               slide.elements.push({
                 type: 'table',
                 id: nanoid(10),
@@ -336,38 +329,36 @@ export default () => {
                 outline: {
                   width: 2,
                   style: 'solid',
-                  color: '#eeece1',
+                  color: '#eeece1'
                 },
                 theme: {
                   color: el.themeColor,
                   rowHeader: true,
                   rowFooter: false,
                   colHeader: false,
-                  colFooter: false,
+                  colFooter: false
                 },
-                cellMinHeight: 36,
+                cellMinHeight: 36
               })
-            }
-            else if (el.type === 'chart') {
+            } else if (el.type === 'chart') {
               let labels: string[]
               let legends: string[]
               let series: number[][]
-  
+
               if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
                 const data = el.data
-                labels = data[0].map(item => item + '')
+                labels = data[0].map((item) => item + '')
                 legends = ['系列1']
                 series = [data[1]]
-              }
-              else {
+              } else {
                 const data = el.data as ChartItem[]
                 labels = Object.values(data[0].xlabels)
-                legends = data.map(item => item.key)
-                series = data.map(item => item.values.map(v => v.y))
+                legends = data.map((item) => item.key)
+                series = data.map((item) => item.values.map((v) => v.y))
               }
-  
+
               const options: ChartOptions = {}
-  
+
               let chartType: ChartType = 'bar'
 
               switch (el.chartType) {
@@ -395,7 +386,7 @@ export default () => {
                   break
                 default:
               }
-  
+
               slide.elements.push({
                 type: 'chart',
                 id: nanoid(10),
@@ -410,16 +401,15 @@ export default () => {
                 data: {
                   labels,
                   legends,
-                  series,
+                  series
                 },
-                options,
+                options
               })
-            }
-            else if (el.type === 'group' || el.type === 'diagram') {
-              const elements = el.elements.map(_el => ({
+            } else if (el.type === 'group' || el.type === 'diagram') {
+              const elements = el.elements.map((_el) => ({
                 ..._el,
                 left: _el.left + originLeft,
-                top: _el.top + originTop,
+                top: _el.top + originTop
               }))
               parseElements(elements)
             }
@@ -438,6 +428,6 @@ export default () => {
   return {
     importSpecificFile,
     importPPTXFile,
-    exporting,
+    exporting
   }
 }
