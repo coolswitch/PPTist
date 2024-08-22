@@ -226,6 +226,7 @@ export default () => {
                 const element: PPTShapeElement = {
                   type: 'shape',
                   id: nanoid(10),
+                  name: el.name,
                   width: el.width,
                   height: el.height,
                   left: el.left,

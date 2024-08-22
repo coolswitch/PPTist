@@ -3,14 +3,25 @@
   <textarea v-model="mdStr" style="width: 49%; height: 400px"></textarea>
   <textarea v-model="tml" style="width: 49%; height: 400px" readonly></textarea>
   <button @click="render">将上述markdown按照模板渲染为ppt</button>
+  <br />
+  <br />
+  <br />
+  <br />
+  <a-input
+    id="iptUpload"
+    type="file"
+    accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    @change="handleImport"
+  />
+  <a-button type="primary" :loading="isLoading" :disabled="isDisabled" @click="handleImport">导入</a-button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useSlidesStore } from '@/store'
 import useMD from '@/hooks/useMD'
-import { slides } from '@/mocks/slides'
+import useImport from '@/views/Home/useImport'
 
 const router = useRouter()
 const slidesStore = useSlidesStore()
@@ -167,13 +178,22 @@ const mdStr = ref(`# AIGC：人工智能生成内容的未来
 
 `)
 
+const { isPopup, isDisabled, isLoading, handleImport } = useImport('#iptUpload')
+watch(
+  () => slidesStore.slides,
+  () => {
+    tml.value = JSON.stringify(slidesStore.slides, null, '    ')
+  },
+  { deep: true }
+)
+
 const { mdString2TransformPages, useTemplate } = useMD()
 
 function render() {
   try {
     // const json = JSON.parse(mdStr.value)
     const pages = mdString2TransformPages(mdStr.value)
-    const json = useTemplate(slides, pages)
+    const json = useTemplate(JSON.parse(tml.value), pages)
     console.log('fdsafdafsda', json, pages)
     if (json.length <= 0) {
       alert('没有解析到数据')

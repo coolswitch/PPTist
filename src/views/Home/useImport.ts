@@ -20,10 +20,12 @@ export default function useImport(uploadInputSelector: string) {
       slides.value = []
       stop = watch(isLoading, (val) => {
         if (!val) {
+          console.log('[[[[[')
           router.push('/preview')
-          console.log('theme', theme.value)
-          console.log('slides', slides.value)
+          // console.log('theme', theme.value)
+          // console.log('slides', slides.value)
           stop && stop()
+          isLoading.value = true
         }
       })
     } else {
