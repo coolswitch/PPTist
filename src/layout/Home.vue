@@ -3,11 +3,11 @@
     <a-layout-sider>
       <h1>七牛PPT - 管理后台</h1>
       <a-menu v-model:selectedKeys="selectedKeys" @select="handleMenuChange" theme="dark" mode="inline">
-        <template v-for="item in homeRoutes">
-          <a-menu-item v-if="!item.children" :key="item.path">
+        <template v-for="item in homeRoutes" :key="item.path">
+          <a-menu-item v-if="!item.children">
             <span>{{ item.meta?.title }}</span>
           </a-menu-item>
-          <a-sub-menu v-else :key="item.path">
+          <a-sub-menu v-else>
             <template #title>
               <span>
                 <span>{{ item.meta?.title }}</span>

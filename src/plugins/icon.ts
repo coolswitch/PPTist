@@ -121,7 +121,7 @@ import {
   CloseOne,
   Info,
   Comment,
-  User,
+  User
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -248,7 +248,7 @@ export const icons: Icons = {
   IconCloseOne: CloseOne,
   IconInfo: Info,
   IconComment: Comment,
-  IconUser: User,
+  IconUser: User
 }
 
 export default {

@@ -26,10 +26,10 @@ export const SYS_FONTS = [
   { label: '圆体', value: 'Yuanti SC' },
   { label: '华文细黑', value: 'STXihei' },
   { label: '幼圆', value: 'YouYuan' },
-  { label: '隶书', value: 'LiSu' },
+  { label: '隶书', value: 'LiSu' }
 ]
 
-export const WEB_FONTS = [
+export const WEB_FONTS: { label: string; value: string }[] = [
   // { label: '得意黑', value: '得意黑' },
   // { label: '仓耳小丸子', value: '仓耳小丸子' },
   // { label: '优设标题黑', value: '优设标题黑' },

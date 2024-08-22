@@ -57,13 +57,17 @@ const currentPanelComponent = computed(() => {
 
 const currentText = computed({
   get() {
+    // @ts-ignore
     return currentPanelComponent.value?.text?.content || currentPanelComponent.value?.content
   },
   set(html: string) {
     if (!currentPanelComponent.value) return
+    // @ts-ignore
     if (currentPanelComponent.value.text?.content) {
+      // @ts-ignore
       currentPanelComponent.value.text.content = html
     } else {
+      // @ts-ignore
       currentPanelComponent.value.content = html
     }
   }
