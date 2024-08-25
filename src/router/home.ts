@@ -5,14 +5,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '',
     meta: { title: '模板管理' },
-    component: () => import('@/views/Home/index.vue'),
+    component: () => import('@/views/Home/index.vue')
   },
   {
     path: 'account-manage',
     meta: { title: '账号管理' },
-    component: () => import('@/views/Home/account-manage.vue'),
+    component: () => import('@/views/Home/account-manage.vue')
     // component: { render: () => h('h2', '账号管理') },
-  },
+  }
   // {
   //   path: 'test',
   //   meta: { title: '二级导航' },

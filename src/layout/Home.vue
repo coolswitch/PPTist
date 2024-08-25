@@ -4,7 +4,7 @@
       <h1>七牛PPT - 管理后台</h1>
       <a-menu v-model:selectedKeys="selectedKeys" @select="handleMenuChange" theme="dark" mode="inline">
         <template v-for="item in homeRoutes" :key="item.path">
-          <a-menu-item v-if="!item.children">
+          <a-menu-item v-if="!item.children" :key="item.path">
             <span>{{ item.meta?.title }}</span>
           </a-menu-item>
           <a-sub-menu v-else>
@@ -22,10 +22,10 @@
       <a-layout-header>
         <div id="home-layout-header-left"></div>
         <a-dropdown>
-          <span class="ant-dropdown-link hand">用户xxx</span>
+          <span class="ant-dropdown-link hand">{{ userinfo.name }}</span>
           <template #overlay>
             <a-menu>
-              <a-menu-item>退出</a-menu-item>
+              <a-menu-item @click="handleLogout">退出</a-menu-item>
             </a-menu>
           </template>
         </a-dropdown>
@@ -38,16 +38,23 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import homeRoutes from '@/router/home'
+import useAuth from '@/hooks/useAuth'
 
-const route = useRoute()
+const auth = useAuth()
 const router = useRouter()
-const selectedKeys = ref<string[]>(route.path.replace('/home/', '').split('/'))
+const selectedKeys = ref<string[]>([''])
+const userinfo = auth.getUInfo()
 
 function handleMenuChange(arg: any) {
   router.push('/home/' + arg.keyPath.join('/'))
+}
+
+function handleLogout() {
+  auth.clear()
+  location.reload()
 }
 </script>
 

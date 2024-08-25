@@ -5,7 +5,7 @@ module.exports = {
   root: true,
   extends: ['plugin:vue/vue3-essential', 'eslint:recommended', '@vue/eslint-config-typescript'],
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 'latest'
   },
   rules: {
     curly: ['error', 'multi-line'],
@@ -15,24 +15,24 @@ module.exports = {
       'error',
       2,
       {
-        SwitchCase: 1,
-      },
+        SwitchCase: 1
+      }
     ],
     quotes: [
       'error',
       'single',
       {
         avoidEscape: true,
-        allowTemplateLiterals: true,
-      },
+        allowTemplateLiterals: true
+      }
     ],
     'key-spacing': [
       'error',
       {
         beforeColon: false,
         afterColon: true,
-        mode: 'strict',
-      },
+        mode: 'strict'
+      }
     ],
     'no-empty': 'error',
     'no-else-return': 'error',
@@ -46,8 +46,8 @@ module.exports = {
       'error',
       {
         before: false,
-        after: true,
-      },
+        after: true
+      }
     ],
     'default-case': 'error',
     'consistent-this': ['error', '_this'],
@@ -61,8 +61,8 @@ module.exports = {
       {
         named: 'never',
         anonymous: 'never',
-        asyncArrow: 'always',
-      },
+        asyncArrow: 'always'
+      }
     ],
     'keyword-spacing': ['error'],
     'prefer-const': 'error',
@@ -81,13 +81,14 @@ module.exports = {
       {
         extendDefaults: true,
         types: {
-          '{}': false,
-        },
-      },
+          '{}': false
+        }
+      }
     ],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/consistent-type-imports': 'error',
     'vue/multi-word-component-names': 'off',
     'vue/no-reserved-component-names': 'off',
-  },
+    'space-before-function-paren': 'off'
+  }
 }
